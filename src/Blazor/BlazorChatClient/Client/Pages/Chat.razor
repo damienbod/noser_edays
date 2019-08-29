@@ -1,0 +1,34 @@
+﻿@page "/chat"
+
+@using Blazor.Extensions
+
+@inject HubConnectionBuilder _hubConnectionBuilder
+
+<h1>Chat</h1>
+
+
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        // in Component Initialization code
+        var connection = _hubConnectionBuilder // the injected one from above.
+                .WithUrl("/myHub", // The hub URL. If the Hub is hosted on the server where the blazor is hosted, you can just use the relative path.
+                opt =>
+                {
+                    opt.LogLevel = SignalRLogLevel.Trace; // Client log level
+                    opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
+                })
+                .Build(); // Build the HubConnection
+
+        //connection.On("Receive", this.Handle); // Subscribe to messages sent from the Hub to the "Receive" method by passing a handle (Func<object, Task>) to process messages.
+        //await connection.StartAsync(); // Start the connection.
+
+        //await connection.InvokeAsync("ServerMethod", param1, param2, paramX); // Invoke a method on the server called "ServerMethod" and pass parameters to it.
+
+        //var result = await connection.InvokeAsync<MyResult>("ServerMethod", param1, param2, paramX); // Invoke a method on the server called "ServerMethod", pass parameters to it and get the result back.
+    }
+
+}

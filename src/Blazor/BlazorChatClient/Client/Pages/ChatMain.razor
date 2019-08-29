@@ -4,7 +4,7 @@
 
 <h3 style="font-style:@_headingFontStyle">ChatMain</h3>
 
-<div>
+<div style="background-color:lightyellow">
     <p>
         Please, select a username: <input type="text" @bind="@UserName" /><br />
         Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><br />
@@ -18,14 +18,18 @@
     <p>I'll echo your message2: @echoMessage2</p>
 </div>
 
-<p>Incoming Messages for @UserName: </p>
+<div style="color:navy">
+    <p style="font-style:oblique;font-size:large">Incoming Messages for @UserName: </p>
 
-@foreach (var singleStr in IncomingMessage)
-{
-<tr>
-    <td>@singleStr</td>
-</tr>
-}
+    <div style="color:dodgerblue">
+        @foreach (var singleStr in IncomingMessage)
+        {
+            <tr>
+                <td>@singleStr</td>
+            </tr>
+        }
+    </div>
+</div>
 
 @functions {
     public string _headingFontStyle = "Italic";

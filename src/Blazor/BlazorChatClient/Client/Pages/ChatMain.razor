@@ -6,21 +6,28 @@
 
 <div>
     <p>
-        Please, select a username: <input type="text" @bind="@UserName" /><br/>
+        Please, select a username: <input type="text" @bind="@UserName" /><br />
         Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><br />
     </p>
 
     <p>I'll echo your message: @OutgoingMessage</p>
 </div>
 
-<p>Incoming Message: @IncomingMessage</p>
+<p>Incoming Message: </p><br />
+
+@foreach (var singleStr in IncomingMessage)
+{
+<tr>
+    <td>@singleStr</td>
+</tr>
+}
 
 @functions {
     protected bool IsDisabled { get; set; } = false;
     [Parameter]
-    public string IncomingMessage { get; set; } = "men will still say, \"This was their finest hour\".";
+    public string[] IncomingMessage { get; set; } = { "Chuck U. Farly", "Yo momma", "Abraham Lincoln" };
     [Parameter]
-    public string OutgoingMessage { get; set; } = "";
+    public string OutgoingMessage { get; set; } = "men will still say, \"This was their finest hour\".";
     [Parameter]
     public string UserName { get; set; } = "Donald Trump";
 }

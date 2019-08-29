@@ -1,0 +1,50 @@
+﻿@page "/chatmain"
+@using BlazorChatClient.Shared
+@inject HttpClient Http
+
+<h3 style="font-style:@_headingFontStyle">ChatMain</h3>
+
+<div style="background-color:lightyellow">
+    <p>
+        Please, select a username: <input type="text" @bind="@UserName" /><br />
+        Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><br />
+    </p>
+
+    <button type="button" class="btn btn-primary" @onclick="UpdateHeading">
+        Send Message
+    </button>
+
+    <p>I'll echo your message: @echoMessage2</p>
+</div>
+
+<div style="color:navy">
+    <p style="font-style:oblique;font-size:large">Incoming Messages for @UserName: </p>
+
+    <div style="color:dodgerblue">
+        @foreach (var singleStr in IncomingMessage)
+        {
+            <tr>
+                <td>@singleStr</td>
+            </tr>
+        }
+    </div>
+</div>
+
+@functions {
+    public string _headingFontStyle = "Italic";
+
+    protected bool IsDisabled { get; set; } = false;
+    [Parameter]
+    public string[] IncomingMessage { get; set; } = { "Chuck U. Farly", "Yo momma", "Abraham Lincoln" };
+    [Parameter]
+    public string OutgoingMessage { get; set; } = "enter message";
+    [Parameter]
+    public string UserName { get; set; } = "";
+
+    public string echoMessage2 { get; set; }
+
+    public void UpdateHeading()
+    {
+        echoMessage2 = OutgoingMessage;
+    }
+}

@@ -17,7 +17,7 @@ namespace Wpf.Views
             InitializeComponent();
 
             connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:53353/ChatHub")
+                .WithUrl("https://apiservernoser.azurewebsites.net/chathub")
                 .WithAutomaticReconnect()
                 .Build();
 

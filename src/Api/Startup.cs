@@ -17,18 +17,17 @@ namespace ApiServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
+                builder.AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials());
-            });
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:52063");
+            }));
+            services.AddSignalR();
 
             services.AddMvc();
-
-            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,13 +37,10 @@ namespace ApiServer
             app.UseHttpsRedirection();
 
             app.UseExceptionHandler("/Home/Error");
-            app.UseCors("CorsPolicy");
             app.UseStaticFiles();
 
-            app.UseSignalR(route =>
-            {
-                route.MapHub<ChatHub>("/chathub");
-            });
+            app.UseCors("CorsPolicy");
+            app.UseSignalR(routes => routes.MapHub<ChatHub>("/chathub"));
 
             app.UseMvc(routes =>
             {

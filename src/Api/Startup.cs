@@ -22,7 +22,7 @@ namespace ApiServer
                 builder.AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
-                    .WithOrigins("http://localhost:52063");
+                    .WithOrigins("http://localhost:52063", "https://localhost:44304");
             }));
 
             services.AddMvc();

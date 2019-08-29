@@ -21,6 +21,8 @@ namespace Wpf.Views
         {
             public string Message { get; set; }
             public string Sender { get; set; }
+
+            public HorizontalAlignment Alignment { get; set; }
             public SolidColorBrush Color { get; set; } = new SolidColorBrush(Colors.Black);
         }
 
@@ -88,7 +90,8 @@ namespace Wpf.Views
                     this.Dispatcher.Invoke(() =>
                     {
                         SolidColorBrush color = user.Equals(userTextBox.Text) ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
-                        MessageItem mi = new MessageItem() { Sender = $"{user} wrote:", Message = message, Color = color };
+                        HorizontalAlignment alignment = user.Equals(userTextBox.Text) ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+                        MessageItem mi = new MessageItem() { Sender = $"{user} wrote:", Message = message, Color = color, Alignment = alignment };
 
                         messagesList.Items.Insert(0, mi);                      
                     });

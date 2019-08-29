@@ -20,7 +20,8 @@
         <ListBox x:Name="messagesList" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  RenderTransformOrigin="0.5,0.5" BorderThickness="1" Margin="5"  BorderBrush="Gainsboro">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="LightBlue" BorderThickness="1" BorderBrush="DarkBlue" HorizontalAlignment="Stretch" Padding="5">
+                    <Grid Width="800">
+                    <Border Background="LightBlue" BorderThickness="1" BorderBrush="DarkBlue" HorizontalAlignment="{Binding Alignment}" Padding="5">
                         <StackPanel RenderTransformOrigin="0.5,0.5">
                             <StackPanel.LayoutTransform>
                                 <TransformGroup>
@@ -31,6 +32,7 @@
                             <TextBlock Text="{Binding Message}" Foreground="{Binding Color}" Margin="0,5,0,0" FontSize="20" TextWrapping="Wrap"/>
                         </StackPanel>
                     </Border>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.LayoutTransform>

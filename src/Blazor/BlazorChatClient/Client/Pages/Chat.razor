@@ -6,29 +6,43 @@
 
 <h1>Chat</h1>
 
-
-
+<input @bind=message />
+<button type="button" @onclick="SendMessage">Submit</button>
 
 @code {
+
+    string message;
+    List<string> messages = new List<string>();
+    HubConnection connection;
 
     protected override async Task OnInitializedAsync()
     {
         // in Component Initialization code
-        var connection = _hubConnectionBuilder // the injected one from above.
-                .WithUrl("/myHub", // The hub URL. If the Hub is hosted on the server where the blazor is hosted, you can just use the relative path.
-                opt =>
-                {
-                    opt.LogLevel = SignalRLogLevel.Trace; // Client log level
-                    opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
-                })
-                .Build(); // Build the HubConnection
+        connection = _hubConnectionBuilder // the injected one from above.
+                        .WithUrl("https://localhost:5001/chatHub", // The hub URL. If the Hub is hosted on the server where the blazor is hosted, you can just use the relative path.
+                        opt =>
+                        {
+                            opt.LogLevel = SignalRLogLevel.Trace; // Client log level
+                            opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
+                        })
+                        .Build(); // Build the HubConnection
 
-        //connection.On("Receive", this.Handle); // Subscribe to messages sent from the Hub to the "Receive" method by passing a handle (Func<object, Task>) to process messages.
-        //await connection.StartAsync(); // Start the connection.
+        // Subscribe to messages sent from the Hub to the "Receive" method by passing a handle (Func<object, Task>) to process messages.
+        connection.On<string, string>("ReceiveMessage", OnReceiveMessage);
+        await connection.StartAsync(); // Start the connection.
+    }
 
-        //await connection.InvokeAsync("ServerMethod", param1, param2, paramX); // Invoke a method on the server called "ServerMethod" and pass parameters to it.
+    Task OnReceiveMessage(string name, string message)
+    {
+        messages.Add(name + " : " + message);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
 
-        //var result = await connection.InvokeAsync<MyResult>("ServerMethod", param1, param2, paramX); // Invoke a method on the server called "ServerMethod", pass parameters to it and get the result back.
+    public async Task SendMessage()
+    {
+        // Invoke a method on the server called "ServerMethod" and pass parameters to it.
+        await connection.InvokeAsync("SendMessage", "ryp", "testy");
     }
 
 }

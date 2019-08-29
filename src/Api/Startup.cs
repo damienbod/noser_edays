@@ -1,9 +1,7 @@
 using ApiServer.Hub;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace ApiServer
 {
@@ -19,7 +17,6 @@ namespace ApiServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
                 builder.AllowAnyMethod()
@@ -27,30 +24,32 @@ namespace ApiServer
                     .AllowCredentials()
                     .WithOrigins("http://localhost:52063");
             }));
+
+            services.AddMvc();
+
             services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
+            app.UseExceptionHandler("/Home/Error");
             app.UseCors("CorsPolicy");
+            app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            app.UseSignalR(route =>
             {
-                endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
+                route.MapHub<ChatHub>("/chathub");
             });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
         }
     }
 }

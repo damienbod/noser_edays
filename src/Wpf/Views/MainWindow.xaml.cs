@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -17,7 +18,28 @@ namespace Wpf.Views
 
             connection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:53353/ChatHub")
+                .WithAutomaticReconnect()
                 .Build();
+
+            connection.Reconnecting += error =>
+            {
+                Debug.Assert(connection.State == HubConnectionState.Reconnecting);
+
+                // Notify users the connection was lost and the client is reconnecting.
+                // Start queuing or dropping messages.
+
+                return Task.CompletedTask;
+            };
+
+            connection.Reconnected += connectionId =>
+            {
+                Debug.Assert(connection.State == HubConnectionState.Connected);
+
+                // Notify users the connection was reestablished.
+                // Start dequeuing messages queued while reconnecting if any.
+
+                return Task.CompletedTask;
+            };
 
             #region snippet_ClosedRestart
             connection.Closed += async (error) =>
@@ -70,5 +92,7 @@ namespace Wpf.Views
             }
             #endregion
         }
-    }
+
+        
+}
 }

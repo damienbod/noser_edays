@@ -7,44 +7,70 @@
 <div style="background-color:lightyellow">
     <p>
         Please, select a username: <input type="text" @bind="@UserName" /><br />
+    </p>
+    <p>
         Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><br />
     </p>
 
-    <button type="button" class="btn btn-primary" @onclick="UpdateHeading">
+    <button type="button" class="btn btn-light" @onclick="StartReceive">
+        Start Receive
+    </button>
+    <button type="button" class="btn btn-primary" @onclick="SendMessage">
         Send Message
     </button>
 
-    <p>I'll echo your message: @echoMessage2</p>
+    <p style="visibility:@IsMsgVisible">I'll echo your message: @echoMessage2</p>
 </div>
 
-<div style="color:navy">
-    <p style="font-style:oblique;font-size:large">Incoming Messages for @UserName: </p>
+<p id="abc" style="font-style:oblique;font-size:large;color:navy;visibility:@IsVisible">Incoming Messages for @UserName: </p>
 
-    <div style="color:dodgerblue">
+<table border="1" style="visibility:@IsVisible" width="200">
         @foreach (var singleStr in IncomingMessage)
         {
-            <tr>
+            <tr style="color:dodgerblue">
                 <td>@singleStr</td>
             </tr>
         }
-    </div>
-</div>
+</table>
 
 @functions {
     public string _headingFontStyle = "Italic";
 
-    protected bool IsDisabled { get; set; } = false;
     [Parameter]
-    public string[] IncomingMessage { get; set; } = { "Chuck U. Farly", "Yo momma", "Abraham Lincoln" };
+    public string[] IncomingMessage { get; set; } = new[] { "" };
     [Parameter]
     public string OutgoingMessage { get; set; } = "enter message";
     [Parameter]
     public string UserName { get; set; } = "";
 
+    protected bool IsDisabled { get; set; } = false;
     public string echoMessage2 { get; set; }
+    public string IsVisible { get; set; } = "hidden";
+    public string IsMsgVisible { get; set; } = "hidden";
 
-    public void UpdateHeading()
+    public void SendMessage()
     {
-        echoMessage2 = OutgoingMessage;
+        if (string.IsNullOrEmpty(this.UserName) == false)
+        {
+            this.IsMsgVisible = "visible";
+            echoMessage2 = OutgoingMessage;
+        }
+    }
+
+    public void StartReceive()
+    {
+        this.IncomingMessage = new[] { "Item 0", "Item 1", "Item 2" };
+
+        this.UnhideTitle();
+
+        return;
+    }
+
+    public void UnhideTitle()
+    {
+        if (string.IsNullOrEmpty(this.UserName) == false)
+        {
+            this.IsVisible = "visible";
+        }
     }
 }

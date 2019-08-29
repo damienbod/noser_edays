@@ -14,8 +14,7 @@
         Send Message
     </button>
 
-    <p>I'll echo your message: @OutgoingMessage</p>
-    <p>I'll echo your message2: @echoMessage2</p>
+    <p>I'll echo your message: @echoMessage2</p>
 </div>
 
 <div style="color:navy">
@@ -38,9 +37,10 @@
     [Parameter]
     public string[] IncomingMessage { get; set; } = { "Chuck U. Farly", "Yo momma", "Abraham Lincoln" };
     [Parameter]
-    public string OutgoingMessage { get; set; } = "men will still say, \"This was their finest hour\".";
+    public string OutgoingMessage { get; set; } = "enter message";
     [Parameter]
-    public string UserName { get; set; } = "Donald Trump";
+    public string UserName { get; set; } = "";
+
     public string echoMessage2 { get; set; }
 
     public void UpdateHeading()

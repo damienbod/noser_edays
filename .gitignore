@@ -351,3 +351,8 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /src/Wpf/obj
+
+/src/Blazor/BlazorChatClient/.vs/
+/src/Blazor/BlazorChatClient/BlazorChatClient/Client/obj
+**/obj
+/src/Blazor/BlazorChatClient/BlazorChatClient/Client/obj/*.*

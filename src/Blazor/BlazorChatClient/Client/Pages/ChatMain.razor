@@ -2,7 +2,7 @@
 @using BlazorChatClient.Shared
 @inject HttpClient Http
 
-<h3>ChatMain</h3>
+<h3 style="font-style:@_headingFontStyle">ChatMain</h3>
 
 <div>
     <p>
@@ -10,10 +10,15 @@
         Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><br />
     </p>
 
+    <button type="button" class="btn btn-primary" @onclick="UpdateHeading">
+        Send Message
+    </button>
+
     <p>I'll echo your message: @OutgoingMessage</p>
+    <p>I'll echo your message2: @echoMessage2</p>
 </div>
 
-<p>Incoming Message: </p><br />
+<p>Incoming Messages for @UserName: </p>
 
 @foreach (var singleStr in IncomingMessage)
 {
@@ -23,6 +28,8 @@
 }
 
 @functions {
+    public string _headingFontStyle = "Italic";
+
     protected bool IsDisabled { get; set; } = false;
     [Parameter]
     public string[] IncomingMessage { get; set; } = { "Chuck U. Farly", "Yo momma", "Abraham Lincoln" };
@@ -30,4 +37,10 @@
     public string OutgoingMessage { get; set; } = "men will still say, \"This was their finest hour\".";
     [Parameter]
     public string UserName { get; set; } = "Donald Trump";
+    public string echoMessage2 { get; set; }
+
+    public void UpdateHeading()
+    {
+        echoMessage2 = OutgoingMessage;
+    }
 }

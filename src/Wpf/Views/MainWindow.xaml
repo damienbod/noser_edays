@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="SignalR Chat WPF Client" Height="800" Width="1024">
+        Title="SignalR Chat WPF Client" Height="800" Width="1024"
+        >
 
 
     <Grid>
@@ -15,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Button x:Name="sendButton" Grid.Row="2" Content="Send Message" FontSize="16" HorizontalAlignment="Right" Margin="10"  Width="110" Click="sendButton_Click" Height="41" IsEnabled="False"/>
-        <TextBox x:Name="messageTextBox" Grid.Row="2" FontSize="20" HorizontalAlignment="Stretch" Height="41" TextWrapping="Wrap" Margin="10, 10, 140, 10"/>
+        <TextBox x:Name="messageTextBox" Grid.Row="2" FontSize="20" HorizontalAlignment="Stretch" Height="41" TextWrapping="Wrap" Margin="10, 10, 140, 10" KeyUp="MessageBox_OnKeyUp"/>
         <ListBox x:Name="messagesList" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  RenderTransformOrigin="0.5,0.5" BorderThickness="1" Margin="5"  BorderBrush="Gainsboro">
             <ListBox.ItemTemplate>
                 <DataTemplate>

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -134,6 +135,13 @@ namespace Wpf.Views
                 messagesList.Items.Add(ex.Message);
             }
             #endregion
+        }
+
+
+        private void MessageBox_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                sendButton_Click(null, null);
         }
 
         private void RaisePropertyChanged([CallerMemberName] string property = null)

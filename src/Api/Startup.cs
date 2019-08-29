@@ -1,3 +1,4 @@
+using ApiServer.Hub;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,14 @@ namespace ApiServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:52063", "https://localhost:44304");
+            }));
+
             services.AddMvc();
 
             services.AddSignalR();
@@ -24,13 +33,14 @@ namespace ApiServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
+
             app.UseExceptionHandler("/Home/Error");
-            app.UseCors("corsGlobalPolicy");
+            app.UseCors("CorsPolicy");
             app.UseStaticFiles();
 
             app.UseSignalR(route =>
             {
-                route.MapHub<ApiServer.Hub.ChatHub>("/chathub");
+                route.MapHub<ChatHub>("/chathub");
             });
 
             app.UseMvc(routes =>

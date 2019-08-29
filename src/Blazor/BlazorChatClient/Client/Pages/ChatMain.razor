@@ -1,0 +1,26 @@
+﻿@page "/chatmain"
+@using BlazorChatClient.Shared
+@inject HttpClient Http
+
+<h3>ChatMain</h3>
+
+<div>
+    <p>
+        Please, select a username: <input type="text" @bind="@UserName" /><br/>
+        Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><br />
+    </p>
+
+    <p>I'll echo your message: @OutgoingMessage</p>
+</div>
+
+<p>Incoming Message: @IncomingMessage</p>
+
+@functions {
+    protected bool IsDisabled { get; set; } = false;
+    [Parameter]
+    public string IncomingMessage { get; set; } = "men will still say, \"This was their finest hour\".";
+    [Parameter]
+    public string OutgoingMessage { get; set; } = "";
+    [Parameter]
+    public string UserName { get; set; } = "Donald Trump";
+}

@@ -4,19 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="SignalR Chat WPF Client" Height="436" Width="782">
-    <Grid Margin="0,0,193.333,50.667">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="109*"/>
-            <ColumnDefinition Width="288*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="connectButton" Content="Connect" HorizontalAlignment="Left" Margin="275.333,63,0,0" VerticalAlignment="Top" Width="95" Click="connectButton_Click" Height="41" Grid.Column="1" />
-        <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="275.333,113,0,0" VerticalAlignment="Top" Width="95" Click="sendButton_Click" Height="41" Grid.Column="1" IsEnabled="False"/>
-        <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="82,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
-        <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="141" Margin="82,170,0,0" VerticalAlignment="Top" Width="311" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro"/>
-        <TextBox x:Name="userTextBox" HorizontalAlignment="Left" Height="41" Margin="82,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
-        <Label Content="User" HorizontalAlignment="Left" Height="31" Margin="39,63,0,0" VerticalAlignment="Top" Width="38"/>
-        <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="19,120,0,0" VerticalAlignment="Top" Width="58"/>
+        Title="SignalR Chat WPF Client" Height="800" Width="1024"
+        >
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+
+        <Button x:Name="sendButton" Grid.Row="2" Content="Send Message" FontSize="16" HorizontalAlignment="Right" Margin="10"  Width="110" Click="sendButton_Click" Height="41" IsEnabled="False"/>
+        <TextBox x:Name="messageTextBox" Grid.Row="2" FontSize="20" HorizontalAlignment="Stretch" Height="41" TextWrapping="Wrap" Margin="10, 10, 140, 10" KeyUp="MessageBox_OnKeyUp"/>
+        <ListBox x:Name="messagesList" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  RenderTransformOrigin="0.5,0.5" BorderThickness="1" Margin="5"  BorderBrush="Gainsboro">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="LightBlue" BorderThickness="1" BorderBrush="DarkBlue" HorizontalAlignment="Stretch" Padding="5">
+                        <StackPanel RenderTransformOrigin="0.5,0.5">
+                            <StackPanel.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="-1"/>
+                                </TransformGroup>
+                            </StackPanel.LayoutTransform>
+                            <TextBlock Text="{Binding Sender}" TextDecorations="Underline" FontSize="20" FontWeight="Bold" Foreground="{Binding Color}"/>
+                            <TextBlock Text="{Binding Message}" Foreground="{Binding Color}" Margin="0,5,0,0" FontSize="20" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                </TransformGroup>
+            </ListBox.LayoutTransform>
+        </ListBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label Content="Username: " Padding="5" FontSize="20" VerticalAlignment="Center" />
+            <TextBox x:Name="userTextBox" FontSize="20" Text="WPF" Width="200" VerticalAlignment="Center" Margin="5,0,10,0"/>
+            <Button x:Name="connectButton" FontSize="16" Content="{Binding ConnectionButtonText}" Width="95" Click="connectButton_Click" Height="41" />
+        </StackPanel>
 
     </Grid>
 </Window>

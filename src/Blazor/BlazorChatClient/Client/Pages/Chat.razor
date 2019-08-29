@@ -6,25 +6,44 @@
 
 <h1>Chat</h1>
 
-<input @bind=message />
-<button type="button" @onclick="SendMessage">Submit</button>
+<div>
+    <p>
+        Please, select a username: <input type="text" @bind="@UserName" /><br />
+        Enter your message       : <input type="text" @bind="@OutgoingMessage" disabled="@IsDisabled" /><button type="button" @onclick="SendMessage">Submit</button><br />
+    </p>
+
+    <p>I'll echo your message: @OutgoingMessage</p>
+</div>
+
+<p>Incoming Message: </p>
+<br />
+
+@foreach (var singleStr in IncomingMessages)
+{
+    <tr>
+        <td>@singleStr</td>
+    </tr>
+}
 
 @code {
 
-    string message;
-    List<string> messages = new List<string>();
+    protected bool IsDisabled = false;
+    List<string> IncomingMessages = new List<string>();
+    public string OutgoingMessage;
+    public string UserName = "Donald Trump";
+
     HubConnection connection;
 
     protected override async Task OnInitializedAsync()
     {
         // in Component Initialization code
         connection = _hubConnectionBuilder // the injected one from above.
-                        .WithUrl("https://localhost:5001/chatHub", // The hub URL. If the Hub is hosted on the server where the blazor is hosted, you can just use the relative path.
+                        .WithUrl("https://apiservernoser.azurewebsites.net/chathub", // The hub URL. If the Hub is hosted on the server where the blazor is hosted, you can just use the relative path.
                         opt =>
                         {
                             opt.LogLevel = SignalRLogLevel.Trace; // Client log level
-                            opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
-                        })
+                        opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
+                    })
                         .Build(); // Build the HubConnection
 
         // Subscribe to messages sent from the Hub to the "Receive" method by passing a handle (Func<object, Task>) to process messages.
@@ -34,7 +53,7 @@
 
     Task OnReceiveMessage(string name, string message)
     {
-        messages.Add(name + " : " + message);
+        IncomingMessages.Add(name + " : " + message);
         StateHasChanged();
         return Task.CompletedTask;
     }
@@ -42,7 +61,7 @@
     public async Task SendMessage()
     {
         // Invoke a method on the server called "ServerMethod" and pass parameters to it.
-        await connection.InvokeAsync("SendMessage", "ryp", "testy");
+        await connection.InvokeAsync("SendMessage", UserName, OutgoingMessage);
     }
 
 }
